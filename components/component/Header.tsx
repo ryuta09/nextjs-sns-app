@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { LogInIcon, SearchIcon, BellIcon, MailIcon } from "./Icons";
+import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedOut } from "@clerk/clerk-react";
 
 export default function Header() {
   return (
@@ -28,9 +30,17 @@ export default function Header() {
             <MailIcon className="h-6 w-6 text-muted-foreground" />
           </Link>
 
-          <Link href="#" className="flex items-center gap-2" prefetch={false}>
-            <div></div>
-          </Link>
+
+          <div>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+
+            <SignedOut>
+              <Link className="w-20 inline-block" href={'/sign-in'}>サインイン</Link>
+            </SignedOut>
+          </div>
+
         </div>
       </div>
     </header>
