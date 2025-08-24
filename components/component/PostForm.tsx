@@ -5,21 +5,17 @@ import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
 import { addPostAction } from "@/lib/action";
 import SubmitButton from "./SubmitButton";
+import { useFormState } from "react-dom";
 
 export default function PostForm() {
-  const [error, setError] = useState<string | undefined>('')
+  const initialState = { error: undefined, success: false }
   const formRef = useRef<HTMLFormElement>(null)
-  
-  async function handleSubmit(formData: FormData) {
-    const result = await addPostAction(formData)
-    if (!result?.success) {
-      setError(result?.error)
-    } else {
-      if (formRef.current) {
-        formRef.current.reset()
-      }
-    }
+  const [state, formAction] = useFormState(addPostAction, initialState)
+
+  if(state.success && formRef.current) {
+    formRef.current.reset()
   }
+  
   return (
     <div>
       <div className="flex items-center gap-4">
@@ -27,7 +23,7 @@ export default function PostForm() {
           <AvatarImage src="/placeholder-user.jpg" />
           <AvatarFallback>AC</AvatarFallback>
         </Avatar>
-        <form ref={formRef} action={handleSubmit} className="flex items-center flex-1">
+        <form ref={formRef} action={formAction} className="flex items-center flex-1">
           <Input
             type="text"
             placeholder="What's on your mind?"
@@ -39,8 +35,8 @@ export default function PostForm() {
         </form>
       </div>
       {
-        error && (
-          <p className="text-destructive mt-1 ml-14">{error}</p>
+        state.error && (
+          <p className="text-destructive mt-1 ml-14">{state.error}</p>
         )
       }
     </div>

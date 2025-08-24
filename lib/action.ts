@@ -3,11 +3,19 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { success, z } from "zod";
 
-
-export async function addPostAction(formData: FormData) {
+type State = {
+  error?: string | undefined;
+  success: boolean;
+}
+export async function addPostAction(prevState: State,formData: FormData): Promise<State> {
 
   const { userId } = auth();
-  if (!userId) return;
+  if (!userId) {
+    return {
+      error: "ログインしてください",
+      success: false
+    }
+  };
 
   try {
     const postText = formData.get('post');
@@ -42,7 +50,10 @@ export async function addPostAction(formData: FormData) {
         success: false,
         error: "保存に失敗しました" 
       }
-
+    }
+    return {
+      success: false,
+      error: "保存に失敗しました"
     }
   }
 }
