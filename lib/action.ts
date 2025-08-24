@@ -28,7 +28,7 @@ export async function addPostAction(formData: FormData) {
         authorId: userId as string
       }
     })
-    return { success: true }
+    return { error: undefined, success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {
       const flat = z.treeifyError(error)
