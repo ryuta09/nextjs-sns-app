@@ -42,10 +42,10 @@ export default function PostInteraction({ postId, initialLikes, commentNumber }:
     <div className="flex items-center gap-2">
       <form action={handleLikeAction}>
         <Button variant="ghost" size="icon">
-          <HeartIcon className="h-5 w-5 text-muted-foreground" />
+          <HeartIcon className={`h-5 w-5  ${optimisticLike.isLiked ? 'text-destructive' : 'text-muted-foreground' }`} />
         </Button>
       </form>
-      <span className="-ml-1">{optimisticLike.likeCount}</span>
+      <span className={`-ml-1 ${optimisticLike.isLiked ? 'text-destructive' : 'text-muted-foreground'}`}>{optimisticLike.likeCount}</span>
       <Button variant="ghost" size="icon">
         <MessageCircleIcon className="h-5 w-5 text-muted-foreground" />
       </Button>
