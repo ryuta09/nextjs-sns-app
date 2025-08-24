@@ -1,9 +1,10 @@
+import PostList from "@/components/component/PostList";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
-export default async function ProfilePage({params}: {params: {username: string}}) {
+export default async function ProfilePage({ params }: { params: { username: string } }) {
 
   const username = params.username;
 
@@ -22,7 +23,7 @@ export default async function ProfilePage({params}: {params: {username: string}}
     }
   })
 
-  if(!user) notFound()
+  if (!user) notFound()
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -70,7 +71,7 @@ export default async function ProfilePage({params}: {params: {username: string}}
               </div>
 
               <div className="mt-6 h-[500px] overflow-y-auto">
-                Time Line Here
+                <PostList username={username}/>
               </div>
             </div>
             <div className="sticky top-14 self-start space-y-6">
