@@ -1,57 +1,45 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { HeartIcon, MessageCircleIcon, Share2Icon } from "./Icons";
-import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { useState } from "react";
+import { likeAction } from "@/lib/action";
+import { useAuth } from "@clerk/nextjs";
 type PostInteractionProps = {
   postId: string;
   initialLikes: string[];
   commentNumber: number;
 }
 export default function PostInteraction({ postId, initialLikes, commentNumber }: PostInteractionProps) {
+  const { userId } = useAuth()
+  const [likeState, setLikeState] = useState({ likeCount: initialLikes.length, isLiked: userId ? initialLikes.includes(userId) : false })
 
-  async function likeAction() {
-    'use server'
-    const { userId } = auth()
-    if (!userId) {
-      throw new Error("User is not authenticated")
-    }
+
+  async function handleLikeAction() {
     try {
-      const exitingLike = await prisma.like.findFirst({
-        where: {
-          postId,
-          userId
-        }
-      })
-      if (exitingLike) {
-        await prisma.like.delete({
-          where: {
-            id: exitingLike.id
-          }
-        })
-        revalidatePath("/");
-      } else {
-        await prisma.like.create({
-          data: {
-            postId,
-            userId
-          }
-        })
-        revalidatePath("/");
-      }
+      setLikeState(prev => ({
+        likeCount: prev.isLiked ? prev.likeCount - 1 : prev.likeCount + 1,
+        isLiked: !prev.isLiked
+      }))
+      await likeAction(postId)
     } catch (error) {
-      console.log(error)
+      setLikeState(prev => ({
+        likeCount: prev.isLiked ? prev.likeCount + 1 : prev.likeCount - 1,
+        isLiked: !prev.isLiked
+      }))
+      console.error(error)
     }
   }
 
   return (
     <div className="flex items-center gap-2">
-      <form action={likeAction}>
+      <form action={handleLikeAction}>
         <Button variant="ghost" size="icon">
           <HeartIcon className="h-5 w-5 text-muted-foreground" />
         </Button>
       </form>
-      <span className="-ml-1">{initialLikes.length}</span>
+      <span className="-ml-1">{likeState.likeCount}</span>
       <Button variant="ghost" size="icon">
         <MessageCircleIcon className="h-5 w-5 text-muted-foreground" />
       </Button>

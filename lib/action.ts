@@ -39,7 +39,7 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
     })
 
     revalidatePath("/");
-    
+
     return { error: undefined, success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -61,3 +61,37 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
     }
   }
 }
+
+
+  export async function likeAction(postId: string) {
+    const { userId } = auth()
+    if (!userId) {
+      throw new Error("User is not authenticated")
+    }
+    try {
+      const exitingLike = await prisma.like.findFirst({
+        where: {
+          postId,
+          userId
+        }
+      })
+      if (exitingLike) {
+        await prisma.like.delete({
+          where: {
+            id: exitingLike.id
+          }
+        })
+        revalidatePath("/");
+      } else {
+        await prisma.like.create({
+          data: {
+            postId,
+            userId
+          }
+        })
+        revalidatePath("/");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
