@@ -24,7 +24,12 @@ export default function Post({ post }: any) {
         <div className="space-y-2">
           <p>{post.content}</p>
         </div>
-        <PostInteraction />
+        <div className="flex items-center justify-between mt-4">
+          <PostInteraction initialLikes={post.likes.map((like: any) => like.userId)}
+            commentNumber={post._count.replies}
+            postId={post.id}
+          />
+        </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <ClockIcon className="h-5 w-5" />
           <span>{post.createdAt.toLocaleString()}</span>
