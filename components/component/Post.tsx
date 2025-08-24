@@ -2,6 +2,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { HeartIcon, MessageCircleIcon, Share2Icon, ClockIcon } from "./Icons";
 import PostInteraction from "./PostInteraction";
+import Link from "next/link";
 
 
 export default function Post({ post }: any) {
@@ -12,10 +13,12 @@ export default function Post({ post }: any) {
         className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
       >
         <div className="flex items-center gap-4 mb-4">
-          <Avatar className="w-10 h-10">
-            <AvatarImage src={post.author.image} />
-            <AvatarFallback>AC</AvatarFallback>
-          </Avatar>
+          <Link href={`/profile/${post.author.name}`}>
+            <Avatar className="w-10 h-10">
+              <AvatarImage src={post.author.image} />
+              <AvatarFallback>AC</AvatarFallback>
+            </Avatar>
+          </Link>
           <div>
             <h3 className="text-lg font-bold">{post.author.name}</h3>
             <p className="text-muted-foreground">{post.author.name}</p>
