@@ -1,6 +1,7 @@
 'use server'
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import { success, z } from "zod";
 
 type State = {
@@ -36,6 +37,9 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
         authorId: userId as string
       }
     })
+
+    revalidatePath("/");
+    
     return { error: undefined, success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {
