@@ -1,39 +1,30 @@
+'use client'
 // components/PostForm.tsx
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SendIcon } from "./Icons";
-import prisma from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { useState } from "react";
+import { addPostAction } from "@/lib/action";
 
 export default function PostForm() {
-  const { userId } = auth();
-  async function addPostAction(formData: FormData) {
-    'use server'
-    const postText = formData.get('post');
+  const [error, setError] = useState<string | undefined>('')
 
-    if(!userId) return;
-    
-    try {
-      await prisma.post.create({
-        data: {
-          content: postText as string,
-          authorId: userId as string
-        }
-      })
-    } catch(err) {
-      console.log(err)
+  async function handleSubmit(formData: FormData) {
+    const result = await addPostAction(formData)
+    if (!result?.success) {
+      setError(result?.error)
+    } else {
+      setError("")
     }
   }
-
   return (
     <div className="flex items-center gap-4">
       <Avatar className="w-10 h-10">
         <AvatarImage src="/placeholder-user.jpg" />
         <AvatarFallback>AC</AvatarFallback>
       </Avatar>
-      <form action={addPostAction} className="flex items-center flex-1">
-
+      <form action={handleSubmit} className="flex items-center flex-1">
         <Input
           type="text"
           placeholder="What's on your mind?"
@@ -45,6 +36,9 @@ export default function PostForm() {
           <span className="sr-only">Tweet</span>
         </Button>
       </form>
+      {error && (
+        <p className="text-red-500 mt-1 ml-14">{error}</p>
+      )}
     </div>
   );
 }
