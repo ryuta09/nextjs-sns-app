@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { fetchPosts } from "@/lib/postDataFethcer";
 import Post from "./Post";
 
-export default async function PostList({username}: {username?: string}) {
+export default async function PostList({ username }: { username?: string }) {
 
   const { userId } = auth()
   if (!userId) {
@@ -15,7 +15,7 @@ export default async function PostList({username}: {username?: string}) {
 
   return (
     <div className="space-y-4">
-      {posts.length > 1 ? posts.map((post) => (
+      {posts ? posts.map((post) => (
         <Post key={post.id} post={post} />
       )) : (
         <p>ポストが見つかりません</p>
