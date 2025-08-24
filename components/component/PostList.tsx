@@ -4,57 +4,16 @@ import { Button } from "@/components/ui/button";
 import { HeartIcon, MessageCircleIcon, Share2Icon, ClockIcon } from "./Icons";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { fetchPosts } from "@/lib/postDataFethcer";
 
 export default async function PostList() {
- 
-  //   {
-  //     id: 1,
-  //     author: { name: "Jane Doe", username: "@janedoe" },
-  //     content:
-  //       "Excited to share my latest project with you all! Check it out and let me know what you think.",
-  //     timestamp: "2h",
-  //     comments: [
-  //       { author: "John Doe", content: "Great work!" },
-  //       { author: "Jane Doe", content: "Looks amazing!" },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     author: { name: "John Smith", username: "@johnsmith" },
-  //     content:
-  //       "Enjoying the beautiful weather today! Whos up for a hike later?",
-  //     timestamp: "1h",
-  //   },
-  // ];
+
   const { userId } = auth()
   if (!userId) {
     return
   }
-  const posts = await prisma.post.findMany({
-    where: {
-      authorId: {
-        in: [userId]
-      }
-    },
-    include: {
-      author: true,
-      likes: {
-        select: {
-          userId: true
-        }
-      },
-      _count: {
-        select: {
-          replies: true
-        }
-      },
-    },
 
-    orderBy: {
-      createdAt: "desc"
-    }
-  })
-
+  const posts = await fetchPosts(userId)
 
   return (
     <div className="space-y-4">
