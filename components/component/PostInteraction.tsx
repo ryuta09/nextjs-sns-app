@@ -3,31 +3,37 @@ import { Button } from "@/components/ui/button";
 import { HeartIcon, MessageCircleIcon, Share2Icon } from "./Icons";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
 import { likeAction } from "@/lib/action";
 import { useAuth } from "@clerk/nextjs";
-type PostInteractionProps = {
+
+interface PostInteractionProps {
   postId: string;
   initialLikes: string[];
   commentNumber: number;
 }
+
+interface LikeState {
+  likeCount: number;
+  isLiked: boolean;
+}
+
 export default function PostInteraction({ postId, initialLikes, commentNumber }: PostInteractionProps) {
   const { userId } = useAuth()
-  const [likeState, setLikeState] = useState({ likeCount: initialLikes.length, isLiked: userId ? initialLikes.includes(userId) : false })
-
+  const initialState = {
+    likeCount: initialLikes.length,
+    isLiked: userId ? initialLikes.includes(userId) : false
+  }
+  const [optimisticLike, addOptimisticLike] = useOptimistic<LikeState, void>(initialState, currentState => ({
+    likeCount: currentState.isLiked ? currentState.likeCount - 1 : currentState.likeCount + 1,
+    isLiked: !currentState.isLiked
+  }))
 
   async function handleLikeAction() {
     try {
-      setLikeState(prev => ({
-        likeCount: prev.isLiked ? prev.likeCount - 1 : prev.likeCount + 1,
-        isLiked: !prev.isLiked
-      }))
+      addOptimisticLike()
       await likeAction(postId)
     } catch (error) {
-      setLikeState(prev => ({
-        likeCount: prev.isLiked ? prev.likeCount + 1 : prev.likeCount - 1,
-        isLiked: !prev.isLiked
-      }))
       console.error(error)
     }
   }
@@ -39,7 +45,7 @@ export default function PostInteraction({ postId, initialLikes, commentNumber }:
           <HeartIcon className="h-5 w-5 text-muted-foreground" />
         </Button>
       </form>
-      <span className="-ml-1">{likeState.likeCount}</span>
+      <span className="-ml-1">{optimisticLike.likeCount}</span>
       <Button variant="ghost" size="icon">
         <MessageCircleIcon className="h-5 w-5 text-muted-foreground" />
       </Button>
