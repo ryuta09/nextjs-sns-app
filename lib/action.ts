@@ -95,3 +95,44 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
       console.log(error)
     }
   }
+
+  export async function followAction(userId: string) {
+
+    const { userId: currentUserId } = auth()
+    if (!currentUserId) {
+      throw new Error("User is not authenticated")
+    }
+    try {
+      // noFollow
+    const existingFollow = await prisma.follow.findFirst({
+      where: {
+        followerId: currentUserId,
+        followingId: userId,
+      },
+    });
+
+    if (existingFollow) {
+      await prisma.follow.delete({
+        where: {
+          followerId_followingId: {
+            followerId: currentUserId,
+            followingId: userId,
+          },
+        },
+      });
+    } else {
+      //follow
+      await prisma.follow.create({
+        data: {
+          followerId: currentUserId,
+          followingId: userId,
+        },
+      });
+    }
+
+    revalidatePath(`/profile/${userId}`);
+    revalidatePath(`/profile/${currentUserId}`);
+    } catch (error) {
+      console.log(error)
+    }
+  }

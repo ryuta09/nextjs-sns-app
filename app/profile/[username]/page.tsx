@@ -35,8 +35,20 @@ export default async function ProfilePage({ params }: { params: { username: stri
 
   if (!user) notFound()
 
+  const existingFollow = await prisma.follow.findUnique({
+    where: {
+      followerId_followingId: {
+        followerId: currentUserId,
+        followingId: user.id,
+      },
+    },
+  });
+
+
+  if (!user) notFound()
+
   const isCurrentUser = currentUserId === user.id
-  const isFollowing = user.following.length > 0
+  const isFollowing = !!existingFollow;
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -89,7 +101,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
             </div>
             <div className="sticky top-14 self-start space-y-6">
 
-              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} />
+              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} userId={user.id} />
               <div>
                 <h3 className="text-lg font-bold">Suggested</h3>
                 <div className="mt-4 space-y-4">
