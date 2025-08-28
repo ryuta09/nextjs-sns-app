@@ -86,12 +86,12 @@ export default async function ProfilePage({ params }: { params: { username: stri
                   <div className="text-muted-foreground">Posts</div>
                 </div>
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">{user?._count.followedBy}</div>
-                  <div className="text-muted-foreground">Followers</div>
+                  <div className="text-2xl font-bold">{user?._count.following}</div>
+                  <div className="text-muted-foreground">フォロー</div>
                 </div>
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">{user?._count.following}</div>
-                  <div className="text-muted-foreground">Following</div>
+                  <div className="text-2xl font-bold">{user?._count.followedBy}</div>
+                  <div className="text-muted-foreground">フォロワー</div>
                 </div>
               </div>
 
