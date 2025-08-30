@@ -24,7 +24,6 @@ const navItems = [
 
 export default function LeftSidebar() {
   const { user } = useUser();
-
   return (
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-4 h-full flex flex-col">
       <div className="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
@@ -33,7 +32,7 @@ export default function LeftSidebar() {
           <AvatarFallback>{user?.firstName?.charAt(0) || "U"}</AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="text-lg font-bold">{user?.fullName || "User"}</h3>
+          <h3 className="text-lg font-bold">{user?.username || "User"}</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">@{user?.username || user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "user"}</p>
         </div>
       </div>
