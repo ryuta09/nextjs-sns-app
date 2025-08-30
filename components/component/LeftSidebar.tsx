@@ -1,6 +1,8 @@
+'use client'
 // components/LeftSidebar.tsx
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useUser } from "@clerk/nextjs";
 import {
   HomeIcon,
   CompassIcon,
@@ -21,16 +23,18 @@ const navItems = [
 ];
 
 export default function LeftSidebar() {
+  const { user } = useUser();
+
   return (
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-4 h-full flex flex-col">
       <div className="flex items-center gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
         <Avatar className="w-12 h-12">
-          <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>JD</AvatarFallback>
+          <AvatarImage src={user?.imageUrl || "/placeholder-user.jpg"} />
+          <AvatarFallback>{user?.firstName?.charAt(0) || "U"}</AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="text-lg font-bold">John Doe</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">@johndoe</p>
+          <h3 className="text-lg font-bold">{user?.fullName || "User"}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">@{user?.username || user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "user"}</p>
         </div>
       </div>
       <nav className="flex-grow">
