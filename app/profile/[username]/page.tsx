@@ -2,6 +2,7 @@ import FollowButton from "@/components/component/FollowButton";
 import PostList from "@/components/component/PostList";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { getUser } from "@/lib/getUser";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
@@ -12,26 +13,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
   const { userId: currentUserId } = auth()
 
   if (!currentUserId) notFound()
-
-  const user = await prisma.user.findFirst({
-    where: {
-      name: username
-    },
-    include: {
-      _count: {
-        select: {
-          following: true,
-          followedBy: true,
-          posts: true
-        }
-      },
-      following: {
-        where: {
-          followerId: currentUserId
-        }
-      }
-    }
-  })
+  const user = await getUser(username, currentUserId)
 
   if (!user) notFound()
 
