@@ -39,7 +39,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
           <div className="grid gap-6 md:grid-cols-[1fr_300px]">
             <div>
               <div className="flex items-center gap-6">
-                <Avatar className="w-24 h-24 mb-4 md:mb-0" src={user?.image || "/placeholder-user.jpg"} alt="Acme Inc Profile" />
+                <Avatar className="w-24 h-24 mb-4 md:mb-0" src={user?.image || "/placeholder-user.jpg"} alt={user?.image || "/placeholder-user.jpg"} />
                 <div>
                   <h1 className="font-bold">{user?.name}</h1>
                   <div className="text-xs">@{user?.name}</div>
