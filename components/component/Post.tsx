@@ -1,27 +1,25 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
-import { HeartIcon, MessageCircleIcon, Share2Icon, ClockIcon } from "./Icons";
+import { ClockIcon } from "./Icons";
 import PostInteraction from "./PostInteraction";
 import Link from "next/link";
-
+import { Avatar, Card } from '@mantine/core';
 
 export default function Post({ post }: any) {
   return (
     <>
-      <div
+      <Card
         key={post.id}
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+        className="bg-white"
+        shadow="sm"
+        radius="md"
+        withBorder
       >
         <div className="flex items-center gap-4 mb-4">
           <Link href={`/profile/${post.author.name}`}>
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={post.author.image} />
-              <AvatarFallback>AC</AvatarFallback>
-            </Avatar>
+            <Avatar className="w-10 h-10" radius="xl" src={post.author.image || "/placeholder-user.jpg"} />
           </Link>
           <div>
-            <h3 className="text-lg font-bold">{post.author.name}</h3>
-            <p className="text-muted-foreground">{post.author.name}</p>
+            <h3 className="font-bold">{post.author.name}</h3>
+            <p className="text-xs ">{post.author.name}</p>
           </div>
         </div>
         <div className="space-y-2">
@@ -37,7 +35,7 @@ export default function Post({ post }: any) {
           <ClockIcon className="h-5 w-5" />
           <span>{post.createdAt.toLocaleString()}</span>
         </div>
-      </div>
+      </Card>
       {/* {post.comments && (
             <div className="mt-4 border-t pt-4 space-y-2">
               {post.comments.map((comment, index) => (

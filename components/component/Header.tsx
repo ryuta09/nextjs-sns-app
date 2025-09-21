@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { LogInIcon, SearchIcon, BellIcon, MailIcon } from "./Icons";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { SignedOut } from "@clerk/clerk-react";
+import { Button } from "@mantine/core";
 
 export default function Header() {
   return (
@@ -37,7 +38,9 @@ export default function Header() {
             </SignedIn>
 
             <SignedOut>
-              <Link className="w-20 inline-block" href={'/sign-in'}>サインイン</Link>
+              <Button variant="filled">
+                <Link className="w-20 inline-block" href={'/sign-in'}>サインイン</Link>
+              </Button>
             </SignedOut>
           </div>
 
