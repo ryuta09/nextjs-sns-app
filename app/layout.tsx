@@ -25,12 +25,13 @@ export default function RootLayout({
           <ColorSchemeScript />
         </head>
         <body className={`${inter.className} flex flex-col h-full`}>
-          <Header />
-          <main className="flex-1 overflow-hidden">
-            <MantineProvider>
+          <MantineProvider>
+            <Header />
+            <main className="flex-1 overflow-hidden">
+
               {children}
-            </MantineProvider>
-          </main>
+            </main>
+          </MantineProvider>
         </body>
       </html>
     </ClerkProvider>
