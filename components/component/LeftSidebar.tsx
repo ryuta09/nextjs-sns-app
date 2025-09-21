@@ -33,7 +33,6 @@ export default function LeftSidebar() {
           <p className="text-sm text-gray-600 dark:text-gray-400">@{user?.username || user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "user"}</p>
         </div>
       </div>
-      <Divider my="sm" />
       <nav className="flex-grow">
         <ul className="space-y-2">
           {navItems.map(({ icon: Icon, label, href }) => (
