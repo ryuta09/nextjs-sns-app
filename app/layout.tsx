@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/component/Header";
 import { ClerkProvider } from '@clerk/nextjs'
+import "@mantine/core/styles.css";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,9 +21,16 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="ja" className="h-full">
+        <head>
+          <ColorSchemeScript />
+        </head>
         <body className={`${inter.className} flex flex-col h-full`}>
           <Header />
-          <main className="flex-1 overflow-hidden">{children}</main>
+          <main className="flex-1 overflow-hidden">
+            <MantineProvider>
+              {children}
+            </MantineProvider>
+          </main>
         </body>
       </html>
     </ClerkProvider>
