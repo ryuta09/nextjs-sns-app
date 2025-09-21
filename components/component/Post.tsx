@@ -1,14 +1,17 @@
 import { ClockIcon } from "./Icons";
 import PostInteraction from "./PostInteraction";
 import Link from "next/link";
-import { Avatar } from '@mantine/core';
+import { Avatar, Card } from '@mantine/core';
 
 export default function Post({ post }: any) {
   return (
     <>
-      <div
+      <Card
         key={post.id}
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+        className="bg-white"
+        shadow="sm"
+        radius="md"
+        withBorder
       >
         <div className="flex items-center gap-4 mb-4">
           <Link href={`/profile/${post.author.name}`}>
@@ -32,7 +35,7 @@ export default function Post({ post }: any) {
           <ClockIcon className="h-5 w-5" />
           <span>{post.createdAt.toLocaleString()}</span>
         </div>
-      </div>
+      </Card>
       {/* {post.comments && (
             <div className="mt-4 border-t pt-4 space-y-2">
               {post.comments.map((comment, index) => (
