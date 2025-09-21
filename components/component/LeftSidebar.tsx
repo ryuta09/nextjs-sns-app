@@ -1,7 +1,7 @@
 'use client'
 // components/LeftSidebar.tsx
 import Link from "next/link";
-import { Avatar, Divider, NavLink } from '@mantine/core';
+import { Avatar, NavLink } from '@mantine/core';
 import { useUser } from "@clerk/nextjs";
 import {
   HomeIcon,

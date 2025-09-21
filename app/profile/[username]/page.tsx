@@ -1,11 +1,10 @@
 import FollowButton from "@/components/component/FollowButton";
 import PostList from "@/components/component/PostList";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/getUser";
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
+import { Avatar } from '@mantine/core';
 
 export default async function ProfilePage({ params }: { params: { username: string } }) {
 
@@ -14,6 +13,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
 
   if (!currentUserId) notFound()
   const user = await getUser(username, currentUserId)
+
 
   if (!user) notFound()
 
@@ -39,16 +39,10 @@ export default async function ProfilePage({ params }: { params: { username: stri
           <div className="grid gap-6 md:grid-cols-[1fr_300px]">
             <div>
               <div className="flex items-center gap-6">
-                <Avatar className="w-24 h-24 mb-4 md:mb-0">
-                  <AvatarImage
-                    src={user?.image || "/placeholder-user.jpg"}
-                    alt="Acme Inc Profile"
-                  />
-                  <AvatarFallback>AI</AvatarFallback>
-                </Avatar>
+                <Avatar className="w-24 h-24 mb-4 md:mb-0" src={user?.image || "/placeholder-user.jpg"} alt="Acme Inc Profile" />
                 <div>
-                  <h1 className="text-3xl font-bold">{user?.name}</h1>
-                  <div className="text-muted-foreground">@{user?.name}</div>
+                  <h1 className="font-bold">{user?.name}</h1>
+                  <div className="text-xs">@{user?.name}</div>
                 </div>
               </div>
 
@@ -84,56 +78,6 @@ export default async function ProfilePage({ params }: { params: { username: stri
             <div className="sticky top-14 self-start space-y-6">
 
               <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} userId={user.id} />
-              <div>
-                <h3 className="text-lg font-bold">Suggested</h3>
-                <div className="mt-4 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>AC</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="font-medium">Acme Inc</div>
-                      <div className="text-muted-foreground text-sm">
-                        @acmeinc
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="icon" className="ml-auto">
-                      <PlusIcon className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>AC</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="font-medium">Acme Inc</div>
-                      <div className="text-muted-foreground text-sm">
-                        @acmeinc
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="icon" className="ml-auto">
-                      <PlusIcon className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>AC</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="font-medium">Acme Inc</div>
-                      <div className="text-muted-foreground text-sm">
-                        @acmeinc
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="icon" className="ml-auto">
-                      <PlusIcon className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
