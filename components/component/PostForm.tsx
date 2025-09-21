@@ -21,7 +21,7 @@ export default function PostForm() {
   return (
     <div>
       <div className="flex items-center gap-4">
-        <Avatar className="w-12 h-12" src={user?.imageUrl || "/placeholder-user.jpg"} />
+        <Avatar className="w-12 h-12" src={user?.imageUrl || "/placeholder-user.jpg"} alt={user?.imageUrl || "/placeholder-user.jpg"} />
         <form ref={formRef} action={formAction} className="flex items-center flex-1">
           <Input.Wrapper className="flex-1 mr-4" >
             <Input
