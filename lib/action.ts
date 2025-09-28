@@ -2,6 +2,7 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { success, z } from "zod";
 
 type State = {
@@ -136,3 +137,83 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
       console.log(error)
     }
   }
+
+const ProfileSchema = z.object({
+  image: z.string().url("画像は有効なURL形式で入力してください").optional().or(z.literal("")).transform(v => v || null),
+  name: z.string().min(1, "名前は必須です").max(50, "名前は50文字以内で入力してください"),
+  bio: z.string().max(280, "プロフィールは280文字以内です").optional().or(z.literal("")).transform(v => v || null),
+  website: z.string().url("WebサイトはURLで入力してください").optional().or(z.literal("")).transform(v => v || null),
+  location: z.string().max(50, "ロケーションは50文字以内です").optional().or(z.literal("")).transform(v => v || null),
+});
+
+export async function updateProfileAction(prevState: State,formData: FormData): Promise<State>{
+    const { userId } = auth();
+  if (!userId) {
+    return {
+      error: "ログインしてください",
+      success: false
+    }
+  };
+
+  // 変更前 name
+  const before = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { name: true },
+  });
+
+  const parsed = ProfileSchema.safeParse({
+    image: formData.get("image"),
+    name: formData.get("name"),
+    bio: formData.get("bio"),
+    website: formData.get("website"),
+    location: formData.get("location"),
+  })
+
+  if(!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues.map(issue => issue.message).join(", ")
+    } 
+  }
+
+
+  const nextName = parsed.data.name;
+  const changedName = before?.name !== nextName;
+
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        image: parsed.data.image,
+        name: parsed.data.name,
+        bio: parsed.data.bio,
+        website: parsed.data.website,
+        location: parsed.data.location,
+      }
+    })
+    revalidatePath(`/profile/${parsed.data.name}`);
+    revalidatePath(`/profile/${userId}`);
+  } catch (error) {
+    console.error(error)
+    return {
+      success: false,
+      error: "プロフィールの更新に失敗しました"
+    }
+  }
+
+  if (before?.name) revalidatePath(`/profile/${before.name}`);
+  revalidatePath(`/profile/${nextName}`);
+
+  if (changedName) {
+    redirect(`/profile/${nextName}`);
+  }
+
+  return {
+    success: true,
+    error: undefined
+  }
+  
+}

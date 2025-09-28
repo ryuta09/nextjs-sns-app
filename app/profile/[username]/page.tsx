@@ -77,7 +77,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
             </div>
             <div className="sticky top-14 self-start space-y-6">
 
-              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} userId={user.id} />
+              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} user={user}/>
             </div>
           </div>
         </div>
