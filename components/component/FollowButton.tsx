@@ -2,7 +2,7 @@
 
 import { followAction, updateProfileAction } from "@/lib/action";
 import { useEffect, useOptimistic, useState, useTransition } from "react";
-import { Modal, Button, TextInput, Group, Box } from '@mantine/core';
+import { Modal, Button, TextInput } from '@mantine/core';
 import { useFormState } from "react-dom";
 
 interface FollowButtonProps {
@@ -56,8 +56,8 @@ export default function FollowButton({ isFollowing, isCurrentUser, user }: Follo
             <TextInput name="image" label="画像" defaultValue={user.image || ""} />
             <TextInput name="name" label="名前" mt="md" defaultValue={user.name || ""} />
             <TextInput name="bio" label="プロフィール" mt="md" defaultValue={user.bio || ""} />
-            <TextInput name="website" label="website" mt="md" defaultValue={user.website || ""} />
-            <TextInput name="location" label="location" mt="md" defaultValue={user.location || ""} />
+            <TextInput name="website" label="WebSite" mt="md" defaultValue={user.website || ""} />
+            <TextInput name="location" label="Location" mt="md" defaultValue={user.location || ""} />
             <div className="flex gap-2 justify-center mt-4">
               <Button variant="default" onClick={() => setOpened(false)}>キャンセル</Button>
               <Button variant="default" type="submit">保存</Button>

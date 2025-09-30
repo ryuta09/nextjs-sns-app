@@ -194,8 +194,6 @@ export async function updateProfileAction(prevState: State,formData: FormData): 
         location: parsed.data.location,
       }
     })
-    revalidatePath(`/profile/${parsed.data.name}`);
-    revalidatePath(`/profile/${userId}`);
   } catch (error) {
     console.error(error)
     return {
