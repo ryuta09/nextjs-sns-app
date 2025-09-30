@@ -21,7 +21,7 @@ interface FollowButtonProps {
 export default function FollowButton({ isFollowing, isCurrentUser, user }: FollowButtonProps) {
   const initialState = { error: undefined, success: false }
   const [state, formAction] = useFormState(updateProfileAction, initialState)
-  const [optimisticFollow, addOptimisticFollow] = useOptimistic<{ isFollowing: boolean }, void>(
+  const [optimisticFollow, addOptimisticFollow] = useOptimistic<{ isFollowing: boolean }, { isFollowing: boolean }>(
     { isFollowing },
     (currentState) => ({ isFollowing: !currentState.isFollowing })
   );
@@ -71,13 +71,16 @@ export default function FollowButton({ isFollowing, isCurrentUser, user }: Follo
   const handleFollowClick = () => {
     if (isPending) return;
 
-    addOptimisticFollow();
+    const prev = optimisticFollow;
+    const next = { isFollowing: !optimisticFollow.isFollowing };
+
+    addOptimisticFollow(next);
     startTransition(async () => {
       try {
         await followAction(user.id);
       } catch (error) {
         console.error(error);
-        addOptimisticFollow();
+        addOptimisticFollow(prev);
       }
     });
   };
