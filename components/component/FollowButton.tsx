@@ -38,8 +38,9 @@ export default function FollowButton({ isFollowing, isCurrentUser, user }: Follo
       <>
         <Button
           type="button"
-          variant="secondary"
+          variant="filled"
           className="w-full"
+          color="gray"
           onClick={() => setOpened(true)}
         >
           プロフィールを編集
@@ -58,8 +59,8 @@ export default function FollowButton({ isFollowing, isCurrentUser, user }: Follo
             <TextInput name="website" label="website" mt="md" defaultValue={user.website || ""} />
             <TextInput name="location" label="location" mt="md" defaultValue={user.location || ""} />
             <div className="flex gap-2 justify-center mt-4">
-              <Button onClick={() => setOpened(false)}>キャンセル</Button>
-              <Button type="submit">保存</Button>
+              <Button variant="default" onClick={() => setOpened(false)}>キャンセル</Button>
+              <Button variant="default" type="submit">保存</Button>
             </div>
           </form>
         </Modal>

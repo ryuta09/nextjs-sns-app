@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { Avatar } from '@mantine/core';
+import Link from "next/link";
 
 export default async function ProfilePage({ params }: { params: { username: string } }) {
 
@@ -45,16 +46,24 @@ export default async function ProfilePage({ params }: { params: { username: stri
                   <div className="text-xs">@{user?.name}</div>
                 </div>
               </div>
+              {user.bio && (
+                <p className="mt-2 text-sm">{user.bio}</p>
+              )}
 
               <div className="mt-4 flex items-center gap-4 text-muted-foreground">
-                <div>
-                  <MapPinIcon className="w-4 h-4 mr-1 inline" />
-                  xxxxxxxxx
-                </div>
-                <div>
-                  <LinkIcon className="w-4 h-4 mr-1 inline" />
-                  xxxxxx.com
-                </div>
+                {user.website && (
+                  <Link href={user.website} target="_blank" className="flex items-center gap-1">
+                    <MapPinIcon className="w-4 h-4 mr-1 inline" />
+                    <div>{user.website}</div>
+                  </Link>
+                )}
+                {user.location && (
+                  <Link href={user.location} target="_blank" className="flex items-center gap-1">
+                    <LinkIcon className="w-4 h-4 mr-1 inline" />
+                    {user.location}
+                  </Link>
+                )}
+
               </div>
               <div className="mt-6 flex items-center gap-6">
                 <div className="flex flex-col items-center">
@@ -77,7 +86,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
             </div>
             <div className="sticky top-14 self-start space-y-6">
 
-              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} user={user}/>
+              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} user={user} />
             </div>
           </div>
         </div>
