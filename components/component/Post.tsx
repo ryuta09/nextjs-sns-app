@@ -2,6 +2,7 @@ import { ClockIcon } from "./Icons";
 import PostInteraction from "./PostInteraction";
 import Link from "next/link";
 import { Avatar, Card } from '@mantine/core';
+import DeletePostButton from "./DeletePostButton";
 
 export default function Post({ post }: any) {
   return (
@@ -20,6 +21,9 @@ export default function Post({ post }: any) {
           <div>
             <h3 className="font-bold">{post.author.name}</h3>
             <p className="text-xs ">{post.author.name}</p>
+          </div>
+          <div className="ml-auto">
+            <DeletePostButton postId={post.id} />
           </div>
         </div>
         <div className="space-y-2">

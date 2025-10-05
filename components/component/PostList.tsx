@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { fetchPosts } from "@/lib/postDataFethcer";
 import Post from "./Post";
-
+import { ModalsProvider } from "@mantine/modals";
 export default async function PostList({ username }: { username?: string }) {
 
   const { userId } = auth()
@@ -14,6 +14,7 @@ export default async function PostList({ username }: { username?: string }) {
   const posts = await fetchPosts(userId, username)
 
   return (
+    <ModalsProvider labels={{ confirm: '削除', cancel: 'キャンセル' }}>
     <div className="space-y-4">
       {posts ? posts.map((post) => (
         <Post key={post.id} post={post} />
@@ -21,5 +22,6 @@ export default async function PostList({ username }: { username?: string }) {
         <p>ポストが見つかりません</p>
       )}
     </div>
+    </ModalsProvider>
   );
 }
