@@ -215,3 +215,32 @@ export async function updateProfileAction(prevState: State,formData: FormData): 
   }
   
 }
+
+export async function deletePostAction(postId: string) {
+  const { userId } = auth()
+  if (!userId) {
+    throw new Error("User is not authenticated")
+  }
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId
+      }
+    })
+    if (!post) {
+      throw new Error("Post not found")
+    }
+    if (post.authorId !== userId) {
+      throw new Error("You are not authorized to delete this post")
+    }
+    
+    await prisma.$transaction([
+      prisma.like.deleteMany({ where: { postId } }),
+      prisma.post.delete({ where: { id: postId } })
+    ])
+    revalidatePath("/");
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to delete post')
+  }
+}
