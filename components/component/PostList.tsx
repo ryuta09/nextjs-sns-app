@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { fetchPosts } from "@/lib/postDataFethcer";
 import Post from "./Post";
 import { ModalsProvider } from "@mantine/modals";
+import prisma from "@/lib/prisma";
 export default async function PostList({ username }: { username?: string }) {
 
   const { userId } = auth()
