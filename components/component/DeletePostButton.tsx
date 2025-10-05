@@ -21,6 +21,7 @@ export default function DeletePostButton({ postId }: { postId: string }) {
           router.refresh()
         } catch(error) {
           console.error(error)
+          throw new Error("削除に失敗しました")
         }
       })
     }
