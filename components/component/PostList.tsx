@@ -17,7 +17,7 @@ export default async function PostList({ username }: { username?: string }) {
     <ModalsProvider labels={{ confirm: '削除', cancel: 'キャンセル' }}>
     <div className="space-y-4">
       {posts ? posts.map((post) => (
-        <Post key={post.id} post={post} />
+        <Post key={post.id} post={post} userId={userId}/>
       )) : (
         <p>ポストが見つかりません</p>
       )}

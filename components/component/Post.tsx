@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Avatar, Card } from '@mantine/core';
 import DeletePostButton from "./DeletePostButton";
 
-export default function Post({ post }: any) {
+export default function Post({ post, userId }: any) {
+  console.log(post);
+  console.log(userId);
   return (
     <>
       <Card
@@ -23,7 +25,9 @@ export default function Post({ post }: any) {
             <p className="text-xs ">{post.author.name}</p>
           </div>
           <div className="ml-auto">
-            <DeletePostButton postId={post.id} />
+            {post.authorId === userId && (
+              <DeletePostButton postId={post.id} />
+            )}
           </div>
         </div>
         <div className="space-y-2">
