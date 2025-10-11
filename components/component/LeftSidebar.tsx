@@ -39,7 +39,7 @@ export default function LeftSidebar({currentUser}: LeftSidebarProps) {
         <Avatar className="w-12 h-12" radius="xl" src={user?.imageUrl || "/placeholder-user.jpg"} alt={user?.username || "User"} />
         <div>
           <h3 className="text-lg font-bold">{displayName}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">@{displayName || user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "user"}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">@{displayName || "user"}</p>
         </div>
       </div>
       <nav className="flex-grow">
