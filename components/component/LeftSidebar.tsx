@@ -2,7 +2,7 @@
 // components/LeftSidebar.tsx
 import Link from "next/link";
 import { Avatar, NavLink } from '@mantine/core';
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import {
   HomeIcon,
   CompassIcon,
@@ -13,24 +13,33 @@ import {
   SettingsIcon,
 } from "./Icons";
 
-const navItems = [
-  { icon: HomeIcon, label: "Home", href: "/" },
-  { icon: CompassIcon, label: "Explore", href: "/explore" },
-  { icon: BookmarkIcon, label: "Bookmarks", href: "/bookmarks" },
-  { icon: UserIcon, label: "Profile", href: "/profile" },
-  { icon: MessageCircleIcon, label: "Messages", href: "/messages" },
-  { icon: HeartIcon, label: "Likes", href: "/likes" },
-];
+interface LeftSidebarProps {
+  currentUser: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  } | null
+}
 
-export default function LeftSidebar() {
+export default function LeftSidebar({currentUser}: LeftSidebarProps) {
   const { user } = useUser();
+  const { userId } = useAuth();
+  const displayName = currentUser?.name ? currentUser.name : "User";
+  const navItems = [
+    { icon: HomeIcon, label: "Home", href: "/" },
+    { icon: CompassIcon, label: "Explore", href: "/explore" },
+    { icon: BookmarkIcon, label: "Bookmarks", href: "/bookmarks" },
+    { icon: UserIcon, label: "Profile", href: userId ? `/profile/${currentUser?.id}` : '/sign-in' },
+    { icon: MessageCircleIcon, label: "Messages", href: "/messages" },
+    { icon: HeartIcon, label: "Likes", href: "/likes" },
+  ];
   return (
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-4 h-full flex flex-col">
       <div className="flex items-center gap-4 pb-4">
-        <Avatar className="w-12 h-12" radius="xl" src={user?.imageUrl || "/placeholder-user.jpg"} alt={user?.username || "User"} />
+        <Avatar className="w-12 h-12" radius="xl" src={user?.imageUrl || "/placeholder-user.jpg"} alt={displayName || "User"} />
         <div>
-          <h3 className="text-lg font-bold">{user?.username || "User"}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">@{user?.username || user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "user"}</p>
+          <h3 className="text-lg font-bold">{displayName}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">@{displayName}</p>
         </div>
       </div>
       <nav className="flex-grow">
