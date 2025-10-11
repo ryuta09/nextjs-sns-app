@@ -29,7 +29,7 @@ export default function LeftSidebar({currentUser}: LeftSidebarProps) {
     { icon: HomeIcon, label: "Home", href: "/" },
     { icon: CompassIcon, label: "Explore", href: "/explore" },
     { icon: BookmarkIcon, label: "Bookmarks", href: "/bookmarks" },
-    { icon: UserIcon, label: "Profile", href: userId ? `/profile/${currentUser?.name}` : '/sign-in' },
+    { icon: UserIcon, label: "Profile", href: userId ? `/profile/${currentUser?.id}` : '/sign-in' },
     { icon: MessageCircleIcon, label: "Messages", href: "/messages" },
     { icon: HeartIcon, label: "Likes", href: "/likes" },
   ];
