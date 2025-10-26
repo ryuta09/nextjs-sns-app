@@ -28,7 +28,6 @@ export default function RootLayout({
           <MantineProvider>
             <Header />
             <main className="flex-1 overflow-hidden">
-
               {children}
             </main>
           </MantineProvider>
