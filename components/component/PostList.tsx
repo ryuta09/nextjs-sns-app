@@ -9,7 +9,9 @@ export default async function PostList({ username }: { username?: string }) {
 
   const { userId } = auth()
   if (!userId) {
-    return
+    return (
+      <div className="flex items-center justify-center">ログインをすると投稿が表示されます</div>
+    )
   }
 
   const posts = await fetchPosts(userId, username)
