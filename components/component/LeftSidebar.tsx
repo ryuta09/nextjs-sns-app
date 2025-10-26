@@ -27,11 +27,11 @@ export default function LeftSidebar({currentUser}: LeftSidebarProps) {
   const displayName = currentUser?.name ? currentUser.name : "User";
   const navItems = [
     { icon: HomeIcon, label: "Home", href: "/" },
-    { icon: CompassIcon, label: "Explore", href: "/explore" },
-    { icon: BookmarkIcon, label: "Bookmarks", href: "/bookmarks" },
+    // { icon: CompassIcon, label: "Explore", href: "/explore" },
+    // { icon: BookmarkIcon, label: "Bookmarks", href: "/bookmarks" },
     { icon: UserIcon, label: "Profile", href: userId ? `/profile/${currentUser?.name}` : '/sign-in' },
-    { icon: MessageCircleIcon, label: "Messages", href: "/messages" },
-    { icon: HeartIcon, label: "Likes", href: "/likes" },
+    // { icon: MessageCircleIcon, label: "Messages", href: "/messages" },
+    // { icon: HeartIcon, label: "Likes", href: "/likes" },
   ];
   return (
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md p-4 h-full flex flex-col">
