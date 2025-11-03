@@ -1,16 +1,15 @@
 'use client'
 // components/PostForm.tsx
-import { useRef, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { addPostAction } from "@/lib/action";
 import SubmitButton from "./SubmitButton";
-import { useFormState } from "react-dom";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, Input } from "@mantine/core";
 
 export default function PostForm() {
   const initialState = { error: undefined, success: false }
   const formRef = useRef<HTMLFormElement>(null)
-  const [state, formAction] = useFormState(addPostAction, initialState)
+  const [state, formAction] = useActionState(addPostAction, initialState)
 
   if (state.success && formRef.current) {
     formRef.current.reset()

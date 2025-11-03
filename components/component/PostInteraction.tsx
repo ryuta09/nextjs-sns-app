@@ -1,8 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import { HeartIcon, MessageCircleIcon, Share2Icon } from "./Icons";
-import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 import { useOptimistic, useState } from "react";
 import { likeAction } from "@/lib/action";
 import { useAuth } from "@clerk/nextjs";
