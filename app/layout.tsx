@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="ja" className="h-full">
+      <html lang="ja" className="h-full" suppressHydrationWarning>
         <head>
           <ColorSchemeScript />
         </head>
