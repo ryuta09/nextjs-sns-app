@@ -1,9 +1,8 @@
 'use client';
 
 import { followAction, updateProfileAction } from "@/lib/action";
-import { useEffect, useOptimistic, useState, useTransition } from "react";
+import { useActionState, useEffect, useOptimistic, useState, useTransition } from "react";
 import { Modal, Button, TextInput } from '@mantine/core';
-import { useFormState } from "react-dom";
 
 interface FollowButtonProps {
   isFollowing: boolean;
@@ -20,7 +19,7 @@ interface FollowButtonProps {
 
 export default function FollowButton({ isFollowing, isCurrentUser, user }: FollowButtonProps) {
   const initialState = { error: undefined, success: false }
-  const [state, formAction] = useFormState(updateProfileAction, initialState)
+  const [state, formAction] = useActionState(updateProfileAction, initialState)
   const [optimisticFollow, addOptimisticFollow] = useOptimistic<{ isFollowing: boolean }, { isFollowing: boolean }>(
     { isFollowing },
     (currentState) => ({ isFollowing: !currentState.isFollowing })

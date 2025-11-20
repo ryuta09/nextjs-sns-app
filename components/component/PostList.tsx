@@ -1,20 +1,27 @@
 // components/PostList.tsx
 
 import { auth } from "@clerk/nextjs/server";
-import { fetchPosts } from "@/lib/postDataFethcer";
+import { fetchLikedPosts, fetchPosts } from "@/lib/postDataFethcer";
 import Post from "./Post";
 import { ModalsProvider } from "@mantine/modals";
-import prisma from "@/lib/prisma";
-export default async function PostList({ username }: { username?: string }) {
 
-  const { userId } = auth()
+interface PostListProps {
+  username?: string;
+  likedOnly?: boolean;
+}
+
+export default async function PostList({ username, likedOnly = false }: PostListProps) {
+
+  const { userId } = await auth()
   if (!userId) {
     return (
       <div className="flex items-center justify-center">ログインをすると投稿が表示されます</div>
     )
   }
 
-  const posts = await fetchPosts(userId, username)
+  const posts = likedOnly
+    ? await fetchLikedPosts(userId)
+    : await fetchPosts(userId, username)
 
   return (
     <ModalsProvider labels={{ confirm: '削除', cancel: 'キャンセル' }}>

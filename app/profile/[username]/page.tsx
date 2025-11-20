@@ -10,7 +10,7 @@ import Link from "next/link";
 export default async function ProfilePage({ params }: { params: { username: string } }) {
 
   const username = params.username;
-  const { userId: currentUserId } = auth()
+  const { userId: currentUserId } = await auth()
 
   if (!currentUserId) notFound()
   const user = await getUser(username, currentUserId)

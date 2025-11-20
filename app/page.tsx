@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 
 
 export default async function Home() {
-  const {userId} = auth()
+  const {userId} = await auth()
   const currentUser = userId ? await getCurrentUser(userId) : null
 
   return (
