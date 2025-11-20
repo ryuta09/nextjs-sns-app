@@ -11,7 +11,7 @@ type State = {
 }
 export async function addPostAction(prevState: State,formData: FormData): Promise<State> {
 
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     return {
       error: "ログインしてください",
@@ -65,7 +65,7 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
 
 
   export async function likeAction(postId: string) {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       throw new Error("User is not authenticated")
     }
@@ -99,7 +99,7 @@ export async function addPostAction(prevState: State,formData: FormData): Promis
 
   export async function followAction(userId: string) {
 
-    const { userId: currentUserId } = auth()
+    const { userId: currentUserId } = await auth()
     if (!currentUserId) {
       throw new Error("User is not authenticated")
     }
@@ -147,7 +147,7 @@ const ProfileSchema = z.object({
 });
 
 export async function updateProfileAction(prevState: State,formData: FormData): Promise<State>{
-    const { userId } = auth();
+    const { userId } = await auth();
   if (!userId) {
     return {
       error: "ログインしてください",
@@ -217,7 +217,7 @@ export async function updateProfileAction(prevState: State,formData: FormData): 
 }
 
 export async function deletePostAction(postId: string) {
-  const { userId } = auth()
+  const { userId } = await auth()
   if (!userId) {
     throw new Error("User is not authenticated")
   }
