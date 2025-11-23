@@ -10,7 +10,7 @@ export default async function Home() {
   const currentUser = userId ? await getCurrentUser(userId) : null
 
   return (
-    <div className="h-full grid grid-cols-1 md:grid-cols-[240px_1fr_240px] gap-6 p-6 overflow-hidden">
+    <div className="h-full grid grid-cols-[80px_1fr] md:grid-cols-[240px_1fr_240px] gap-6 p-6 overflow-hidden">
       <LeftSidebar currentUser={currentUser} />
       <MainContent />
       <RightSidebar />
