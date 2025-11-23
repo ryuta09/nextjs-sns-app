@@ -2,7 +2,7 @@ import LeftSidebar from "@/components/component/LeftSidebar";
 import PostList from "@/components/component/PostList";
 import RightSidebar from "@/components/component/RightSidebar";
 import getCurrentUser from "@/lib/getCurrentUser";
-import { fetchLikedPosts } from "@/lib/postDataFethcer";
+import { fetchLikedPosts } from "@/lib/postDataFetcher";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function LikesPage() {
@@ -10,7 +10,7 @@ export default async function LikesPage() {
   const currentUser = userId ? await getCurrentUser(userId) : null;
   const posts = await fetchLikedPosts(userId!);
 
-  if(!posts) return
+  if(!posts) return <div>投稿が見つかりません</div>
   return (
     <div className="h-full grid grid-cols-1 md:grid-cols-[240px_1fr_240px] gap-6 p-6 overflow-hidden">
       <LeftSidebar currentUser={currentUser} />

@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { Avatar } from '@mantine/core';
 import Link from "next/link";
-import { fetchPostsByUsername } from "@/lib/postDataFethcer";
+import { fetchPostsByUsername } from "@/lib/postDataFetcher";
 
 type Props = {
   params: Promise<{ username: string }>;

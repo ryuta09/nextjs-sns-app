@@ -1,4 +1,4 @@
-import { fetchAllPosts } from "@/lib/postDataFethcer";
+import { fetchAllPosts } from "@/lib/postDataFetcher";
 import PostForm from "./PostForm";
 import PostList from "./PostList";
 

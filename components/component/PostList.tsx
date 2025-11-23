@@ -12,7 +12,11 @@ interface PostListProps {
 
 export default async function PostList({ username, posts }: PostListProps) {
 
-  if(!posts) return
+  if (!posts) {
+    return (
+      <div className="flex items-center justify-center">投稿が見つかりません</div>
+    )
+  }
 
   const { userId } = await auth()
   if (!userId) {
@@ -24,11 +28,9 @@ export default async function PostList({ username, posts }: PostListProps) {
   return (
     <ModalsProvider labels={{ confirm: '削除', cancel: 'キャンセル' }}>
     <div className="space-y-4">
-      {posts ? posts.map((post: Post) => (
+      {posts.map((post: Post) => (
         <PostItem key={post.id} post={post} userId={userId}/>
-      )) : (
-        <p>ポストが見つかりません</p>
-      )}
+      ))}
     </div>
     </ModalsProvider>
   );

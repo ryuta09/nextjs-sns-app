@@ -303,11 +303,11 @@ export async function editPostAction(prevState: State, formData: FormData): Prom
       },
       data: {
         content: validatedPostText.data,
-        updatedAt: new Date()
       }
     })
 
     revalidatePath("/");
+    revalidatePath(`/profile/${post.authorId}`);
 
     return { error: undefined, success: true }
   } catch (error) {
