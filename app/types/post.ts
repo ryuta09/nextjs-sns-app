@@ -9,4 +9,5 @@ export interface Post {
     name: string | null;
     image: string | null;
   };
+  username?: string
 }

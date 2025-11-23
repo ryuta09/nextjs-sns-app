@@ -280,6 +280,14 @@ export async function editPostAction(prevState: State, formData: FormData): Prom
     const post = await prisma.post.findUnique({
       where: {
         id: postId
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
       }
     })
 
@@ -307,7 +315,7 @@ export async function editPostAction(prevState: State, formData: FormData): Prom
     })
 
     revalidatePath("/");
-    revalidatePath(`/profile/${post.authorId}`);
+    revalidatePath(`/profile/${post.author.name}`);
 
     return { error: undefined, success: true }
   } catch (error) {
