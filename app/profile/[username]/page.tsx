@@ -43,15 +43,18 @@ export default async function ProfilePage({ params }: Props) {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <div className="container py-6 md:py-10 lg:py-12 mx-auto">
-          <div className="grid gap-6 md:grid-cols-[1fr_300px]">
+        <div className="container py-6 md:py-10 lg:py-12 mx-auto px-4">
+          <div className="">
             <div>
-              <div className="flex items-center gap-6">
-                <Avatar className="w-24 h-24 mb-4 md:mb-0" src={user?.image || "/placeholder-user.jpg"} alt={user?.image || "/placeholder-user.jpg"} />
+              <div className="flex items-center justify-between gap-6">
                 <div>
-                  <h1 className="font-bold">{user?.name}</h1>
-                  <div className="text-xs">@{user?.name}</div>
+                  <Avatar className="w-24 h-24 mb-4 md:mb-0" src={user?.image || "/placeholder-user.jpg"} alt={user?.image || "/placeholder-user.jpg"} />
+                  <div>
+                    <h1 className="font-bold">{user?.name}</h1>
+                    <div className="text-xs">@{user?.name}</div>
+                  </div>
                 </div>
+                <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} user={user} />
               </div>
               {user.bio && (
                 <p className="mt-2 text-sm">{user.bio}</p>
@@ -92,8 +95,7 @@ export default async function ProfilePage({ params }: Props) {
               </div>
             </div>
             <div className="sticky top-14 self-start space-y-6">
-
-              <FollowButton isFollowing={isFollowing} isCurrentUser={isCurrentUser} user={user} />
+              
             </div>
           </div>
         </div>
