@@ -2,12 +2,15 @@ import LeftSidebar from "@/components/component/LeftSidebar";
 import PostList from "@/components/component/PostList";
 import RightSidebar from "@/components/component/RightSidebar";
 import getCurrentUser from "@/lib/getCurrentUser";
+import { fetchLikedPosts } from "@/lib/postDataFethcer";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function LikesPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
   const currentUser = userId ? await getCurrentUser(userId) : null;
+  const posts = await fetchLikedPosts(userId!);
 
+  if(!posts) return
   return (
     <div className="h-full grid grid-cols-1 md:grid-cols-[240px_1fr_240px] gap-6 p-6 overflow-hidden">
       <LeftSidebar currentUser={currentUser} />
@@ -19,7 +22,7 @@ export default async function LikesPage() {
           </p>
         </div>
         <div className="overflow-y-auto">
-          <PostList likedOnly />
+          <PostList posts={posts}/>
         </div>
       </div>
       <RightSidebar />

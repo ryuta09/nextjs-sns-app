@@ -15,7 +15,14 @@ const postSelect = {
   _count: { select: { replies: true } },
 };
 
-export async function fetchPosts(userId: string, username?: string) {
+export async function fetchAllPosts() {
+  return prisma.post.findMany({
+    select: postSelect,
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function fetchPostsByUsername(username?: string) {
   return await prisma.post.findMany({
     where: {
       author: {

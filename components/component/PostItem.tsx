@@ -3,8 +3,9 @@ import PostInteraction from "./PostInteraction";
 import Link from "next/link";
 import { Avatar, Card } from '@mantine/core';
 import DeletePostButton from "./DeletePostButton";
+import EditPostButton from "./EditPostButton";
 
-export default function Post({ post, userId }: any) {
+export default function PostItem({ post, userId }: any) {
   return (
     <>
       <Card
@@ -22,9 +23,12 @@ export default function Post({ post, userId }: any) {
             <h3 className="font-bold">{post.author.name}</h3>
             <p className="text-xs ">{post.author.name}</p>
           </div>
-          <div className="ml-auto">
+          <div className="ml-auto flex gap-2">
             {post.author.id === userId && (
-              <DeletePostButton postId={post.id} />
+              <>
+                <EditPostButton postId={post.id} initialContent={post.content} />
+                <DeletePostButton postId={post.id} />
+              </>
             )}
           </div>
         </div>

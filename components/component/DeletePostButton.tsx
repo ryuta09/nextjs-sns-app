@@ -28,6 +28,6 @@ export default function DeletePostButton({ postId }: { postId: string }) {
   })
 
   return (
-    <Button variant="outline" color="red" onClick={() => openModal(postId)}>削除</Button>
+    <Button size="xs" variant="outline" color="red" onClick={() => openModal(postId)}>削除</Button>
   )
 }
