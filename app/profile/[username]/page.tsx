@@ -6,10 +6,15 @@ import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 import { Avatar } from '@mantine/core';
 import Link from "next/link";
+import { fetchPostsByUsername } from "@/lib/postDataFetcher";
 
-export default async function ProfilePage({ params }: { params: { username: string } }) {
+type Props = {
+  params: Promise<{ username: string }>;
+}
 
-  const username = params.username;
+export default async function ProfilePage({ params }: Props) {
+
+  const { username } = await params;
   const { userId: currentUserId } = await auth()
 
   if (!currentUserId) notFound()
@@ -32,6 +37,8 @@ export default async function ProfilePage({ params }: { params: { username: stri
 
   const isCurrentUser = currentUserId === user.id
   const isFollowing = !!existingFollow;
+
+  const posts = await fetchPostsByUsername(username)
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -81,7 +88,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
               </div>
 
               <div className="mt-6 h-[500px] overflow-y-auto">
-                <PostList username={username} />
+                <PostList username={username} posts={posts} />
               </div>
             </div>
             <div className="sticky top-14 self-start space-y-6">

@@ -1,16 +1,22 @@
 // components/PostList.tsx
 
 import { auth } from "@clerk/nextjs/server";
-import { fetchLikedPosts, fetchPosts } from "@/lib/postDataFethcer";
-import Post from "./Post";
 import { ModalsProvider } from "@mantine/modals";
+import type { Post } from "@/app/types/post";
+import PostItem from "./PostItem";
 
 interface PostListProps {
   username?: string;
-  likedOnly?: boolean;
+  posts?: Post[]
 }
 
-export default async function PostList({ username, likedOnly = false }: PostListProps) {
+export default async function PostList({ username, posts }: PostListProps) {
+
+  if (!posts) {
+    return (
+      <div className="flex items-center justify-center">投稿が見つかりません</div>
+    )
+  }
 
   const { userId } = await auth()
   if (!userId) {
@@ -19,18 +25,12 @@ export default async function PostList({ username, likedOnly = false }: PostList
     )
   }
 
-  const posts = likedOnly
-    ? await fetchLikedPosts(userId)
-    : await fetchPosts(userId, username)
-
   return (
     <ModalsProvider labels={{ confirm: '削除', cancel: 'キャンセル' }}>
     <div className="space-y-4">
-      {posts ? posts.map((post) => (
-        <Post key={post.id} post={post} userId={userId}/>
-      )) : (
-        <p>ポストが見つかりません</p>
-      )}
+      {posts.map((post: Post) => (
+        <PostItem key={post.id} post={post} userId={userId}/>
+      ))}
     </div>
     </ModalsProvider>
   );

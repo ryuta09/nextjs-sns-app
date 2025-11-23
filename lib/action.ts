@@ -244,3 +244,85 @@ export async function deletePostAction(postId: string) {
     throw new Error('Failed to delete post')
   }
 }
+
+export async function editPostAction(prevState: State, formData: FormData): Promise<State> {
+  const { userId } = await auth();
+  if (!userId) {
+    return {
+      error: "ログインしてください",
+      success: false
+    }
+  };
+
+  try {
+    const postId = formData.get('postId') as string;
+    const postContent = formData.get('post');
+    
+    if (!postId) {
+      return {
+        error: "投稿IDが見つかりません",
+        success: false
+      }
+    }
+
+    const postTextSchema = z.string().min(1, "ポスト内容を入力してください").max(140, "140字以内で入力してください");
+
+    const validatedPostText = postTextSchema.safeParse(postContent)
+
+    if (!validatedPostText.success) {
+      return {
+        success: false,
+        error: validatedPostText.error.issues.map(issue => issue.message).join(", ")
+      }
+    }
+
+    // 投稿の存在確認と権限チェック
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      }
+    })
+
+    if (!post) {
+      return {
+        error: "投稿が見つかりません",
+        success: false
+      }
+    }
+
+    if (post.authorId !== userId) {
+      return {
+        error: "この投稿を編集する権限がありません",
+        success: false
+      }
+    }
+
+    await prisma.post.update({
+      where: {
+        id: postId
+      },
+      data: {
+        content: validatedPostText.data,
+      }
+    })
+
+    revalidatePath("/");
+    revalidatePath(`/profile/${post.author.name}`);
+
+    return { error: undefined, success: true }
+  } catch (error) {
+    console.error(error)
+    return {
+      success: false,
+      error: "投稿の編集に失敗しました" 
+    }
+  }
+}
