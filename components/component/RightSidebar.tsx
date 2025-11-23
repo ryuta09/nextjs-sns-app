@@ -10,7 +10,7 @@ export default function RightSidebar() {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 space-y-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 space-y-6 md:block hidden">
       <div>
         <h3 className="text-lg font-bold mb-4">Trending Topics</h3>
         <div className="space-y-2">
