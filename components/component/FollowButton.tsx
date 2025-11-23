@@ -3,7 +3,7 @@
 import { followAction, updateProfileAction } from "@/lib/action";
 import { useActionState, useEffect, useOptimistic, useState, useTransition } from "react";
 import { Modal, Button, TextInput } from '@mantine/core';
-
+import { IoSettingsOutline } from "react-icons/io5";
 interface FollowButtonProps {
   isFollowing: boolean;
   isCurrentUser: boolean;
@@ -42,7 +42,7 @@ export default function FollowButton({ isFollowing, isCurrentUser, user }: Follo
           color="gray"
           onClick={() => setOpened(true)}
         >
-          プロフィールを編集
+          <IoSettingsOutline />
         </Button>
 
         <Modal
